@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TubeFetch</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">TF</span>
+        <div>
+          <h1>TubeFetch</h1>
+          <p class="tagline" data-i18n="tagline">YouTube 单视频下载</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-btn active" data-lang="zh" id="langZh">中文</button>
+          <button type="button" class="lang-btn" data-lang="en" id="langEn">EN</button>
+        </div>
+        <button type="button" class="btn ghost" id="btnSettings" data-i18n="settings">设置</button>
+      </div>
+    </header>
+
+    <section class="panel input-panel">
+      <label class="label" for="url" data-i18n="videoUrl">视频链接</label>
+      <div class="row">
+        <input id="url" type="url" data-i18n-placeholder="urlPlaceholder" placeholder="粘贴 youtube.com / youtu.be / shorts 链接" />
+        <button type="button" class="btn" id="btnParse" data-i18n="parse">解析</button>
+        <button type="button" class="btn primary" id="btnDownload" data-i18n="download" disabled>下载</button>
+      </div>
+      <p class="hint" id="ffmpegHint"></p>
+      <p class="error" id="errorMsg" hidden></p>
+    </section>
+
+    <section class="panel preview-panel" id="preview" hidden>
+      <div class="preview-grid">
+        <img id="thumb" alt="" data-i18n-alt="thumbnail" class="thumb" />
+        <div class="meta">
+          <h2 id="title">—</h2>
+          <p class="channel" id="channel"></p>
+          <p class="duration" id="duration"></p>
+          <details>
+            <summary data-i18n="description">简介</summary>
+            <pre id="description" class="desc"></pre>
+          </details>
+          <div class="options">
+            <label>
+              <span data-i18n="quality">清晰度</span>
+              <select id="quality">
+                <option value="best" data-i18n="qBest">best（最高）</option>
+                <option value="4k">4K</option>
+                <option value="1080" selected>1080p</option>
+                <option value="720">720p</option>
+                <option value="480">480p</option>
+                <option value="audio" data-i18n="qAudio">仅音频 (mp3)</option>
+              </select>
+            </label>
+            <label class="grow">
+              <span data-i18n="saveDir">保存目录</span>
+              <input id="downloadDir" type="text" />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="progress-wrap" id="progressWrap" hidden>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-meta">
+          <span id="progressText">0%</span>
+          <button type="button" class="btn ghost danger" id="btnCancel" data-i18n="cancel" hidden>取消</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel history-panel">
+      <div class="section-head">
+        <h3 data-i18n="history">下载历史</h3>
+        <button type="button" class="btn ghost" id="btnRefreshHistory" data-i18n="refresh">刷新</button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="settings-form" id="settingsForm">
+      <h3 data-i18n="settings">设置</h3>
+      <label>
+        <span data-i18n="defaultSavePath">默认保存路径</span>
+        <input name="download_dir" id="setDir" type="text" />
+      </label>
+      <label>
+        <span data-i18n="defaultQuality">默认清晰度</span>
+        <select name="quality" id="setQuality">
+          <option value="best">best</option>
+          <option value="4k">4k</option>
+          <option value="1080">1080</option>
+          <option value="720">720</option>
+          <option value="480">480</option>
+          <option value="audio" data-i18n="qAudioShort">仅音频</option>
+        </select>
+      </label>
+      <label>
+        <span data-i18n="proxyLabel">代理地址（如 http://127.0.0.1:7890）</span>
+        <input name="proxy" id="setProxy" type="text" />
+      </label>
+      <label class="check">
+        <input type="checkbox" id="setSystemProxy" />
+        <span data-i18n="useSystemProxy">使用系统代理（忽略上方手动代理）</span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="setTerms" />
+        <span data-i18n="terms">我承诺仅将本工具用于个人合法用途，并遵守 YouTube 条款与版权规定</span>
+      </label>
+      <div class="row end">
+        <button type="submit" class="btn primary" value="save" data-i18n="save">保存</button>
+        <button type="button" class="btn ghost" id="btnCloseSettings" data-i18n="close">关闭</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="doneDialog">
+    <div class="done-dialog">
+      <h3 data-i18n="downloadComplete">下载完成</h3>
+      <p class="done-path" id="donePath"></p>
+      <div class="donate-box">
+        <p class="donate-text" data-i18n="donateHint">如果觉得有用，可以请作者喝杯咖啡 ☕</p>
+        <img class="donate-qr" src="/static/donate.png" alt="" data-i18n-alt="donateAlt" />
+      </div>
+      <div class="row end">
+        <button type="button" class="btn ghost" id="btnOpenDonePath" data-i18n="openFolder">打开目录</button>
+        <button type="button" class="btn primary" id="btnCloseDone" data-i18n="ok">好的</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
