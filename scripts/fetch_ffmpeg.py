@@ -13,6 +13,10 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
+from stdio_util import configure_stdio
+
+configure_stdio()
+
 ROOT = Path(__file__).resolve().parents[1]
 VENDOR = ROOT / "vendor" / "ffmpeg"
 
