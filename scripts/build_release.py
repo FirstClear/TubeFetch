@@ -12,7 +12,7 @@ Output: dist/TubeFetch-<platform>/  and  dist/TubeFetch-<platform>.zip
 
 Windows note:
   PyInstaller cannot cross-compile. Build the .exe on Windows (or via
-  GitHub Actions: .github/workflows/build-windows.yml).
+  GitHub Actions: .github/workflows/build-release.yml).
 """
 
 from __future__ import annotations
@@ -25,6 +25,10 @@ import subprocess
 import sys
 import zipfile
 from pathlib import Path
+
+from stdio_util import configure_stdio
+
+configure_stdio()
 
 ROOT = Path(__file__).resolve().parents[1]
 
