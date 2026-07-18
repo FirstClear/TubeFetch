@@ -69,7 +69,7 @@ python scripts/build_release.py --platform win32-x64
 产出 `dist/TubeFetch-win32-x64.zip`，解压后运行 `TubeFetch.exe`（已内置 ffmpeg）。  
 桌面窗口依赖 Edge WebView2（Win10/11 通常已自带）。
 
-用 GitHub Actions：仓库 Actions 里手动跑 **Build Windows**，或推送 `v*` 标签自动构建并挂到 Release。
+用 GitHub Actions：仓库 **Actions → Build Release → Run workflow** 一键同时打 Windows + macOS（arm64/Intel）包；或推送 `v*` 标签自动构建并挂到 Release。
 
 产出 `dist/TubeFetch-darwin-arm64.zip` / `dist/TubeFetch-darwin-x64.zip`。  
 macOS 包内会同时带上 **arm64 + x64** 两套 ffmpeg，运行时按 CPU 自动选择。  
@@ -180,7 +180,7 @@ python scripts/build_release.py --platform win32-x64
 Output: `dist/TubeFetch-win32-x64.zip` → run `TubeFetch.exe` (ffmpeg bundled).  
 Needs Edge WebView2 (usually preinstalled on Win10/11).
 
-Or run the **Build Windows** workflow / push a `v*` tag.
+Or run **Actions → Build Release** (Windows + macOS arm64/Intel in one click) / push a `v*` tag.
 
 Produces `dist/TubeFetch-darwin-arm64.zip` / `dist/TubeFetch-darwin-x64.zip`.  
 macOS builds embed **both** arm64 and x64 ffmpeg; the runtime picks by CPU.  
