@@ -1,0 +1,5 @@
+# Vendored static ffmpeg/ffprobe (downloaded by scripts/fetch_ffmpeg.py)
+# Binaries are large; fetch at build time or locally — do not commit.
+*
+!.gitignore
+!README.md

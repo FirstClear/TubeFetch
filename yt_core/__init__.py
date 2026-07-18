@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-import shutil
 import threading
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
 
 import yt_dlp
+
+from yt_core.ffmpeg_util import ffmpeg_available, ffmpeg_ydl_opts
 
 def _compat_format(max_side: int | None = None) -> str:
     """Prefer H.264 + AAC so macOS QuickTime can play video (not audio-only).
@@ -57,10 +58,6 @@ class DownloadJob:
     cancel_flag: threading.Event = field(default_factory=threading.Event)
     result_path: Path | None = None
     error: str | None = None
-
-
-def ffmpeg_available() -> bool:
-    return shutil.which("ffmpeg") is not None
 
 
 def is_youtube_url(url: str) -> bool:
@@ -169,6 +166,7 @@ def _build_ydl_opts(
         "retries": 10,
         "fragment_retries": 10,
         "noprogress": True,
+        **ffmpeg_ydl_opts(),
         **_proxy_opts(proxy),
     }
     if progress_hooks:
@@ -224,6 +222,7 @@ def download(
             "outtmpl": str(output_dir / "%(title)s.video.%(ext)s"),
             "format": "bestvideo",
             "continuedl": True,
+            **ffmpeg_ydl_opts(),
             **_proxy_opts(proxy),
         }
         audio_opts = {
@@ -237,6 +236,7 @@ def download(
                     "preferredquality": "192",
                 }
             ],
+            **ffmpeg_ydl_opts(),
             **_proxy_opts(proxy),
         }
         with yt_dlp.YoutubeDL(video_opts) as ydl:

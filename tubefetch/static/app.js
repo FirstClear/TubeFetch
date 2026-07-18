@@ -34,9 +34,10 @@
       openFolder: "打开目录",
       ok: "好的",
       delete: "删除",
-      ffmpegOk: "ffmpeg 已就绪，可合并高清音视频。",
-      ffmpegMissing: "未检测到 ffmpeg：高清合并可能失败，建议 conda/brew 安装 ffmpeg。",
-      ffmpegMissingShort: "未检测到 ffmpeg：高清合并可能失败，建议安装后再下载。",
+      ffmpegOk: "ffmpeg 已就绪（内置或系统），可合并高清音视频。",
+      ffmpegMissing:
+        "未检测到 ffmpeg：高清合并可能失败。请运行 python scripts/fetch_ffmpeg.py，或 brew/conda 安装。",
+      ffmpegMissingShort: "未检测到 ffmpeg：高清合并可能失败，请先获取内置或系统 ffmpeg。",
       noTitle: "（无标题）",
       channel: "频道：{name}",
       duration: "时长：{time}",
@@ -93,11 +94,11 @@
       openFolder: "Open folder",
       ok: "OK",
       delete: "Delete",
-      ffmpegOk: "ffmpeg is ready for high-quality merge.",
+      ffmpegOk: "ffmpeg is ready (bundled or system) for high-quality merge.",
       ffmpegMissing:
-        "ffmpeg not found: high-quality merge may fail. Install via conda/brew.",
+        "ffmpeg not found: run python scripts/fetch_ffmpeg.py, or install via brew/conda.",
       ffmpegMissingShort:
-        "ffmpeg not found: high-quality merge may fail. Install it before downloading.",
+        "ffmpeg not found: high-quality merge may fail. Fetch bundled or system ffmpeg first.",
       noTitle: "(No title)",
       channel: "Channel: {name}",
       duration: "Duration: {time}",
