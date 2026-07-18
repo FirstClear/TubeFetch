@@ -22,8 +22,8 @@ jobs:
           - os: macos-14
             platform: darwin-arm64
             artifact: TubeFetch-darwin-arm64
-          # Intel Mac
-          - os: macos-13
+          # Intel Mac (macos-13 deprecated / scarce — use macos-15-intel)
+          - os: macos-15-intel
             platform: darwin-x64
             artifact: TubeFetch-darwin-x64
 
