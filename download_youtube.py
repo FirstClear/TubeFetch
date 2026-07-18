@@ -58,7 +58,8 @@ def main() -> None:
 
     if not ffmpeg_available():
         print("警告: 未检测到 ffmpeg。高清视频通常是音视频分离的，合并需要 ffmpeg。")
-        print("安装方式: brew install ffmpeg  或  conda install -c conda-forge ffmpeg")
+        print("推荐: python scripts/fetch_ffmpeg.py  （下载到 vendor/，随应用打包）")
+        print("或: brew install ffmpeg  /  conda install -c conda-forge ffmpeg")
 
     fmt = QUALITY_PRESETS.get(args.quality, args.quality)
     print(f"开始下载: {url}")
