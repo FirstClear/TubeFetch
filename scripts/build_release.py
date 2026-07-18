@@ -229,7 +229,7 @@ def main() -> None:
             "       pip install -r requirements.txt -r requirements-build.txt\n"
             "       python scripts/build_release.py --platform win32-x64\n"
             "  2) 推送代码后用 GitHub Actions 构建 "
-            "(.github/workflows/build-windows.yml)\n"
+            "(.github/workflows/build-release.yml)\n"
         )
     if plat.startswith("darwin") and host != "darwin":
         raise SystemExit(f"无法在 {host} 上打包 macOS 应用，请在 Mac 上构建。")
